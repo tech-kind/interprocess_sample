@@ -14,16 +14,17 @@ namespace SamplePublisher
             _publisher = CreatePublisher<int>("/api/test");
 
             var timer = new System.Timers.Timer(100);
-
-            // タイマーの処理
-            timer.Elapsed += (sender, e) =>
-            {
-                _count++;
-                _publisher.Publish(_count);
-            };
+            timer.Elapsed += OnTimer;
 
             // タイマーを開始する
             timer.Start();
+        }
+
+        private void OnTimer(object? sender, EventArgs e)
+        {
+            _count++;
+            Console.WriteLine($"[publish] count={_count}");
+            _publisher.Publish(_count);
         }
     }
 }

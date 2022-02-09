@@ -4,6 +4,6 @@ using SampleSubscription;
 
 var provider = InterprocessProvider.init("127.0.0.1", 3125);
 
-var publisherNode = new SampleSubscriptionNode(provider);
+var subscriptionNode = new SampleSubscriptionNode(provider);
 
 InterprocessProvider.Spin();

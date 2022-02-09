@@ -11,7 +11,12 @@ namespace SampleSubscription
             : base(serviceProvider)
         {
             _subscription = CreateSubscription<int>("/api/test");
-            _subscription.Subscribe(x => Console.WriteLine(x));
+            _subscription.Subscribe(CountCallback);
+        }
+
+        private void CountCallback(int count)
+        {
+            Console.WriteLine($"[subscribe] count={count}");
         }
     }
 }
