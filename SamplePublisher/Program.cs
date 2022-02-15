@@ -2,8 +2,8 @@
 using InterProcessProvider;
 using SamplePublisher;
 
-var provider = InterprocessProvider.init("127.0.0.1", 3125);
+InterprocessProvider.Init();
 
-var publisherNode = new SamplePublisherNode(provider);
+var publisherNode = new SamplePublisherNode();
 
 InterprocessProvider.Spin();

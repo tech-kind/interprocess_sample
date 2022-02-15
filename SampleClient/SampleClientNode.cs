@@ -1,22 +1,21 @@
 ﻿using InterProcessProvider;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace SamplePublisher
+namespace SampleClient
 {
-    public class SamplePublisherNode : Node
+    public class SampleClientNode : Node
     {
-        private readonly Publisher<int> _publisher;
+        private readonly Client<int, int> _client;
         private int _count = 0;
 
         /// <summary>
         /// 
         /// </summary>
-        public SamplePublisherNode()
+        public SampleClientNode()
             : base()
         {
-            _publisher = CreatePublisher<int>("/api/test");
+            _client = CreateClient<int, int>("/api/test2");
 
-            var timer = new System.Timers.Timer(100);
+            var timer = new System.Timers.Timer(10000);
             timer.Elapsed += OnTimer;
 
             // タイマーを開始する
@@ -28,11 +27,12 @@ namespace SamplePublisher
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnTimer(object? sender, EventArgs e)
+        private async void OnTimer(object? sender, EventArgs e)
         {
             _count++;
             Console.WriteLine($"[publish] count={_count}");
-            _publisher.Publish(_count);
+            var res = await _client.Call(_count);
+            Console.WriteLine($"[publish] callback={res}");
         }
     }
 }

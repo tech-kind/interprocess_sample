@@ -1,9 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using InterProcessProvider;
-using SampleSubscription;
+using SampleServer;
 
 InterprocessProvider.Init();
 
-var subscriptionNode = new SampleSubscriptionNode();
+var serverNode = new SampleServerNode();
 
 InterprocessProvider.Spin();

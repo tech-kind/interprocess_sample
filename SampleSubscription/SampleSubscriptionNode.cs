@@ -7,13 +7,21 @@ namespace SampleSubscription
     {
         private readonly Subscription<int> _subscription;
 
-        public SampleSubscriptionNode(ServiceProvider serviceProvider)
-            : base(serviceProvider)
+        /// <summary>
+        /// 
+        /// </summary>
+        public SampleSubscriptionNode()
+            : base()
         {
             _subscription = CreateSubscription<int>("/api/test");
+            
             _subscription.Subscribe(CountCallback);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="count"></param>
         private void CountCallback(int count)
         {
             Console.WriteLine($"[subscribe] count={count}");

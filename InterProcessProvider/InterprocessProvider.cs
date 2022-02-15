@@ -3,22 +3,41 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace InterProcessProvider
 {
+
     public static class InterprocessProvider
     {
         public static bool _initialized = false;
 
-        public static ServiceProvider init(string ipAdress, int port)
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void Init()
+        {
+            _initialized = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="asServer"></param>
+        /// <returns></returns>
+        public static ServiceProvider CreateProvider(string name, bool asServer = false)
         {
             ServiceCollection services = new ServiceCollection();
 
             services.AddMessagePipe();
-            services.AddMessagePipeUdpInterprocess(ipAdress, port);
-
-            _initialized = true;
+            services.AddMessagePipeNamedPipeInterprocess(name, x =>
+            {
+                x.HostAsServer = asServer;
+            });
 
             return services.BuildServiceProvider();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static void Shutdown()
         {
             if (!_initialized)
@@ -28,11 +47,19 @@ namespace InterProcessProvider
             _initialized = false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static bool Ok()
         {
             return _initialized;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeoutMilliSec"></param>
         public static void Spin(int timeoutMilliSec = 10)
         {
             var spinner = new SpinWait();
